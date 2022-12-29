@@ -103,7 +103,7 @@ jobs:
           envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},KEY,SECRET,ADMIN_EMAIL,ADMIN_PASSWORD,DB_CLIENT,DB_HOST,DB_PORT,DB_USER,DB_PASSWORD,DB_DATABASE
           script: |
             # Stop running container
-            echo $FOO
+            echo "$FOO"
             docker stop ${{env.IMAGE_NAME}}
             # Remove old container
             docker rm ${{env.IMAGE_NAME}}
