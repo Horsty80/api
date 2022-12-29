@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "create-snapshot": "npx directus schema snapshot ./snapshots/\"$(date \"+%F\")\"-snapshot-\"$(date \"+%s\")\".yaml",
 		"start": "directus start"
   },
   "keywords": [],
