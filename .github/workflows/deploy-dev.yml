@@ -83,14 +83,27 @@ jobs:
     steps:
       - name: Deploy front to Digital Ocean droplet via SSH action
         uses: appleboy/ssh-action@v0.1.6
+        env:
+          KEY: ${{ secrets.KEY }}
+          SECRET: ${{ secrets.SECRET }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          DB_CLIENT: ${{ secrets.DB_CLIENT }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          FOO: "this is foo test"
         with:
           host: ${{ secrets.DIGITAL_OCEAN_HOST }}
           username: ${{ secrets.USERNAME }}
           passphrase: ${{ secrets.DEPLOYER_PASSPHRASE }}
           key: ${{ secrets.DEPLOYER_SSH_KEY }}
-          envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},KEY,SECRET,ADMIN_EMAIL,ADMIN_PASSWORD,DB_CLIENT,DB_HOST,DB_PORT,DB_USER,DB_PASSWORD,DB_DATABASE
           script: |
             # Stop running container
+            echo $FOO
             docker stop ${{env.IMAGE_NAME}}
             # Remove old container
             docker rm ${{env.IMAGE_NAME}}
@@ -99,14 +112,14 @@ jobs:
             docker run -d -it --restart always \
             -p 8055:8055 \
             --name ${{env.IMAGE_NAME}} \
-            -e "KEY={{ secrets.KEY }}" \
-            -e "SECRET={{ secrets.SECRET }}" \
-            -e "ADMIN_EMAIL={{ secrets.ADMIN_EMAIL }}" \
-            -e "ADMIN_PASSWORD={{ secrets.ADMIN_PASSWORD }}" \
-            -e "DB_CLIENT={{ secrets.DB_CLIENT }}" \
-            -e "DB_HOST={{ secrets.DB_HOST }}" \
-            -e "DB_PORT={{ secrets.DB_PORT }}" \
-            -e "DB_USER={{ secrets.DB_USER }}" \
-            -e "DB_PASSWORD={{ secrets.DB_PASSWORD }}" \
-            -e "DB_DATABASE={{ secrets.DB_DATABASE }}" \
+            -e "KEY=$KEY" \
+            -e "SECRET=$SECRET" \
+            -e "ADMIN_EMAIL=$ADMIN_EMAIL" \
+            -e "ADMIN_PASSWORD=$ADMIN_PASSWORD" \
+            -e "DB_CLIENT=$DB_CLIENT" \
+            -e "DB_HOST=$DB_HOST" \
+            -e "DB_PORT=$DB_PORT" \
+            -e "DB_USER=$DB_USER" \
+            -e "DB_PASSWORD=$DB_PASSWORD" \
+            -e "DB_DATABASE=$DB_DATABASE" \
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
