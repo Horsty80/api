@@ -1,7 +1,5 @@
 FROM node:18-alpine
 
-# Installing lib vips-dev for sharp Compatibility (pourquoi sharp ?)
-# RUN apk update && apk add build-base gcc autoconf automake zlib-dev libpng-dev nasm bash vips vips-dev
 RUN npm install -g pnpm
 
 ARG NODE_ENV=development
@@ -9,7 +7,6 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /usr/src/app
 
-# RUN npm install --platform=linuxmusl --arch=arm64v8 sharp
 COPY ./package.json ./pnpm-lock.yaml ./
 
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
@@ -19,7 +16,5 @@ WORKDIR /usr/src/app
 COPY ./ .
 
 RUN pnpm install --frozen-lockfile
-
-# EXPOSE 8055
 
 CMD ["pnpm", "start"]
