@@ -84,7 +84,7 @@ jobs:
       - name: Deploy front to Digital Ocean droplet via SSH action
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.HOST }}
+          host: ${{ secrets.DIGITAL_OCEAN_HOST }}
           username: ${{ secrets.USERNAME }}
           passphrase: ${{ secrets.DEPLOYER_PASSPHRASE }}
           key: ${{ secrets.DEPLOYER_SSH_KEY }}
@@ -97,7 +97,7 @@ jobs:
             # Run a new container from a new image
             # –rm \
             docker run -d -it --restart always \
-            -p 8055:8055 node-api \
+            -p 8055:8055 cms-api \
             -e KEY={{ secrets.KEY }} \
             -e SECRET={{ secrets.SECRET }} \
             -e ADMIN_EMAIL={{ secrets.ADMIN_EMAIL }} \
