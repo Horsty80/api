@@ -108,5 +108,4 @@ jobs:
             -e DB_USER={{ secrets.DB_USER }} \
             -e DB_PASSWORD={{ secrets.DB_PASSWORD }} \
             -e DB_DATABASE={{ secrets.DB_DATABASE }} \
-            --name ${{env.IMAGE_NAME}} \
-            ${{env.REGISTRY}}/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
+            --name ${{env.IMAGE_NAME}} ${{env.REGISTRY}}/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
