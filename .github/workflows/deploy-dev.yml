@@ -103,7 +103,7 @@ jobs:
           envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},DIGITAL_OCEAN_KEY,SECRET,ADMIN_EMAIL,ADMIN_PASSWORD,DB_CLIENT,DB_HOST,DB_PORT,DB_USER,DB_PASSWORD,DB_DATABASE
           script: |
             # Stop running container
-            echo "$FOO"
+            echo $FOO
             docker stop ${{env.IMAGE_NAME}}
             # Remove old container
             docker rm ${{env.IMAGE_NAME}}
@@ -124,3 +124,5 @@ jobs:
             -e "DB_PASSWORD=$DB_PASSWORD" \
             -e "DB_DATABASE=$DB_DATABASE" \
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
+            docker exec ${{env.IMAGE_NAME}} npx directus schema apply --yes ./snapshot/2022-12-29-snapshot-1672344346.yaml
+            docker exec -d ${{env.IMAGE_NAME}} pnpm start

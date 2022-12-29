@@ -17,7 +17,4 @@ COPY ./ .
 
 RUN pnpm install --frozen-lockfile
 
-## How variabilize the snapshot name
-RUN npx directus schema apply --yes ./2022-12-29-snapshot-1672344346.yaml
-
-CMD ["pnpm", "start"]
+# CMD ["pnpm", "start"]
