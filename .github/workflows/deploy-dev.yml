@@ -113,7 +113,7 @@ jobs:
             docker run -d -it --restart always \
             -p 8055:8055 \
             --name ${{env.IMAGE_NAME}} \
-            --add-host=host.docker.internal:host-gateway \
+            --add-host=host.docker.internal:172.17.0.1 \
             -e "KEY=$DIGITAL_OCEAN_KEY" \
             -e "SECRET=$SECRET" \
             -e "ADMIN_EMAIL=$ADMIN_EMAIL" \
