@@ -98,14 +98,15 @@ jobs:
             # –rm \
             docker run -d -it --restart always \
             -p 8055:8055 \
-            -e KEY={{ secrets.KEY }} \
-            -e SECRET={{ secrets.SECRET }} \
-            -e ADMIN_EMAIL={{ secrets.ADMIN_EMAIL }} \
-            -e ADMIN_PASSWORD={{ secrets.ADMIN_PASSWORD }} \
-            -e DB_CLIENT={{ secrets.DB_CLIENT }} \
-            -e DB_HOST={{ secrets.DB_HOST }} \
-            -e DB_PORT={{ secrets.DB_PORT }} \
-            -e DB_USER={{ secrets.DB_USER }} \
-            -e DB_PASSWORD={{ secrets.DB_PASSWORD }} \
-            -e DB_DATABASE={{ secrets.DB_DATABASE }} \
-            --name ${{env.IMAGE_NAME}} ${{env.REGISTRY}}/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
+            --name ${{env.IMAGE_NAME}} \
+            ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
+            # -e KEY={{ secrets.KEY }} \
+            # -e SECRET={{ secrets.SECRET }} \
+            # -e ADMIN_EMAIL={{ secrets.ADMIN_EMAIL }} \
+            # -e ADMIN_PASSWORD={{ secrets.ADMIN_PASSWORD }} \
+            # -e DB_CLIENT={{ secrets.DB_CLIENT }} \
+            # -e DB_HOST={{ secrets.DB_HOST }} \
+            # -e DB_PORT={{ secrets.DB_PORT }} \
+            # -e DB_USER={{ secrets.DB_USER }} \
+            # -e DB_PASSWORD={{ secrets.DB_PASSWORD }} \
+            # -e DB_DATABASE={{ secrets.DB_DATABASE }} \
