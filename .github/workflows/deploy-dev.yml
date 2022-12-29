@@ -111,6 +111,7 @@ jobs:
             # –rm \
             docker run -d -it --restart always \
             -p 8055:8055 \
+            --network=host \
             --name ${{env.IMAGE_NAME}} \
             -e "KEY=$DIGITAL_OCEAN_KEY" \
             -e "SECRET=$SECRET" \
