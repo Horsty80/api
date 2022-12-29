@@ -99,8 +99,8 @@ jobs:
             docker run -d -it --restart always \
             -p 8055:8055 \
             --name ${{env.IMAGE_NAME}} \
-            -e KEY={{ secrets.KEY }} \
-            -e SECRET={{ secrets.SECRET }} \
+            -e "KEY={{ secrets.KEY }}" \
+            -e "SECRET={{ secrets.SECRET }}" \
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
             # -e ADMIN_EMAIL={{ secrets.ADMIN_EMAIL }} \
             # -e ADMIN_PASSWORD={{ secrets.ADMIN_PASSWORD }} \
