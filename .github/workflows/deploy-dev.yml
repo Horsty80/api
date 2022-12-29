@@ -103,7 +103,7 @@ jobs:
             # Run a new container from a new image
             # –rm \
             docker run -d -it --restart always \
-            -p 8055:8055 cms-api \
+            -p 8055:8055 \
             -e KEY={{ secrets.KEY }} \
             -e SECRET={{ secrets.SECRET }} \
             -e ADMIN_EMAIL={{ secrets.ADMIN_EMAIL }} \
