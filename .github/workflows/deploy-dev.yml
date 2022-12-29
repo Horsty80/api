@@ -81,6 +81,12 @@ jobs:
     environment: dev
 
     steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy front to Digital Ocean droplet via SSH action
         uses: appleboy/ssh-action@v0.1.6
         with:
