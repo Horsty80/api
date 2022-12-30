@@ -100,10 +100,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           passphrase: ${{ secrets.DEPLOYER_PASSPHRASE }}
           key: ${{ secrets.DEPLOYER_SSH_KEY }}
-          envs: FOO,IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},DIGITAL_OCEAN_KEY,SECRET,ADMIN_EMAIL,ADMIN_PASSWORD,DB_CLIENT,DB_HOST,DB_PORT,DB_USER,DB_PASSWORD,DB_DATABASE
+          envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},DIGITAL_OCEAN_KEY,SECRET,ADMIN_EMAIL,ADMIN_PASSWORD,DB_CLIENT,DB_HOST,DB_PORT,DB_USER,DB_PASSWORD,DB_DATABASE
           script: |
             # Stop running container
-            echo "I am $FOO"
             docker stop ${{env.IMAGE_NAME}}
             # Remove old container
             docker rm ${{env.IMAGE_NAME}}
@@ -113,7 +112,7 @@ jobs:
             docker run -d -it --restart always \
             -p 8055:8055 \
             --name ${{env.IMAGE_NAME}} \
-            --add-host=host.docker.internal:172.17.0.1 \
+            --network uhue \
             -e "KEY=$DIGITAL_OCEAN_KEY" \
             -e "SECRET=$SECRET" \
             -e "ADMIN_EMAIL=$ADMIN_EMAIL" \
@@ -124,4 +123,6 @@ jobs:
             -e "DB_USER=$DB_USER" \
             -e "DB_PASSWORD=$DB_PASSWORD" \
             -e "DB_DATABASE=$DB_DATABASE" \
+            -v "$(pwd)"/uploads:/uploads \
+            -v "$(pwd)"/extensions:/extensions \
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}

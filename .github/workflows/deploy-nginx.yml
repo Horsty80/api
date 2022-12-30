@@ -98,5 +98,6 @@ jobs:
             # –rm \
             docker run -d -it --restart always \
             -p 80:80 \
+            --network uhue \
             --name ${{env.IMAGE_NAME}} \
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}

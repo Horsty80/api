@@ -1,0 +1,56 @@
+name: deploy-database
+
+# 1
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the master branch
+  # push:
+  #   branches: [main]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    # inputs:
+    #   version:
+    #     description: "Image version"
+    #     required: true
+#2
+env:
+  IMAGE_NAME: cms-database
+
+#3
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Deploy front to Digital Ocean droplet via SSH action
+        uses: appleboy/ssh-action@v0.1.6
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_HOST }}
+          username: ${{ secrets.USERNAME }}
+          passphrase: ${{ secrets.DEPLOYER_PASSPHRASE }}
+          key: ${{ secrets.DEPLOYER_SSH_KEY }}
+          envs: IMAGE_NAME,{{ secrets.DIGITALOCEAN_ACCESS_TOKEN }},DB_USER,DB_PASSWORD,DB_DATABASE
+          script: |
+            # Stop running container
+            docker stop ${{env.IMAGE_NAME}}
+            # Remove old container
+            docker rm ${{env.IMAGE_NAME}}
+            docker run -d --restart always \
+            -p 5432:5432 \
+            --network uhue \
+            --name ${{env.IMAGE_NAME}} \
+            -e "POSTGRES_PASSWORD=$DB_PASSWORD" \
+            -e "POSTGRES_USER=$DB_USER" \
+            -e "POSTGRES_DB=$DB_DATABASE" \
+            -e "PGDATA=/var/lib/postgresql/data/pgdata" \
+            -v "$(pwd)"/database/mount:/var/lib/postgresql/data \
+            postgres
