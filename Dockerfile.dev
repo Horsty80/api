@@ -20,5 +20,5 @@ RUN pnpm install --frozen-lockfile
 EXPOSE 8055
 EXPOSE 80
 
-CMD npx directus bootstrap && npx directus schema apply --yes ./snapshots/2022-12-29-snapshot-1672344346.yaml && pnpm directus start
+CMD npx directus bootstrap && npx directus schema apply --yes ./snapshots/2023-01-01-snapshot-1672592475.yaml && pnpm directus start
 # CMD ["pnpm", "start"]

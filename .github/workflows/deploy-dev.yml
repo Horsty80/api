@@ -125,4 +125,5 @@ jobs:
             -e "DB_DATABASE=$DB_DATABASE" \
             -v "$(pwd)"/uploads:/uploads \
             -v "$(pwd)"/extensions:/extensions \
+            -v "$(pwd)"/snapshots:/snapshots \
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
