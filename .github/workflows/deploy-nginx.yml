@@ -102,7 +102,6 @@ jobs:
             -p 443:443 \
             --network uhue \
             --name ${{env.IMAGE_NAME}} \
-            -v "$(pwd)"/nginx/default.conf:/etc/nginx/nginx.conf \
             -v "$(pwd)"/certbot/conf:/etc/letsencrypt \
             -v "$(pwd)"/certbot/www:/var/www/certbot \
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
