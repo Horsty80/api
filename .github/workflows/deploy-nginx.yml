@@ -17,6 +17,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: cms-nginx
+  DOMAIN_LIST: dev.uhue.fr,admin.dev.uhue.fr,www.dev.uhue.fr,www.admin.dev.fr
 
 #3
 jobs:
@@ -98,6 +99,9 @@ jobs:
             # –rm \
             docker run -d -it --restart always \
             -p 80:80 \
+            -p 443:443 \
             --network uhue \
             --name ${{env.IMAGE_NAME}} \
+            -v ./nginx/letsencrypt:/etc/letsencrypt \
+            -v ./nginx/config/conf.d/dev:/etc/nginx/conf.d \
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
