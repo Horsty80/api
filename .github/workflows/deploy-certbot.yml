@@ -1,4 +1,4 @@
-name: deploy-nginx
+name: deploy-certbot
 
 # 1
 # Controls when the workflow will run
@@ -16,7 +16,7 @@ on:
 #2
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: cms-nginx
+  IMAGE_NAME: uhue-certbot
   DOMAIN_LIST: dev.uhue.fr,admin.dev.uhue.fr,www.dev.uhue.fr,www.admin.dev.fr
 
 #3
@@ -69,7 +69,7 @@ jobs:
         with:
           # relative path to the place where source code with Dockerfile is located
           context: .
-          file: ./nginx/Dockerfile.dev
+          file: ./certbot/Dockerfile.dev
           # platforms: linux/amd64,linux/arm64
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
@@ -97,13 +97,9 @@ jobs:
             docker rm ${{env.IMAGE_NAME}}
             # Run a new container from a new image
             # –rm \
-            docker run -d -it --restart always \
-            -p 80:80 \
-            -p 443:443 \
+            docker run -d -it \
             --network uhue \
             --name ${{env.IMAGE_NAME}} \
-            -v "$(pwd)"/nginx/letsencrypt:/etc/letsencrypt \
-            -v "$(pwd)"/nginx/nginx.conf:/etc/nginx/nginx.conf \
             -v "$(pwd)"/certbot/conf:/etc/letsencrypt
             -v "$(pwd)"/certbot/www:/var/www/certbot
             ghcr.io/horsty80/${{env.IMAGE_NAME}}:${{ needs.build_and_push.outputs.BRANCH }}.${{ needs.build_and_push.outputs.NUMBER_COMMIT }}-${{ needs.build_and_push.outputs.SHA_SHORT }}
