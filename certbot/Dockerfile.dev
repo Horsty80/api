@@ -1,3 +1,3 @@
 FROM certbot/certbot
 
-CMD certonly --webroot -w /var/www/certbot --force-renewal --email cy.hue80@gmail.com -d dev.uhue.fr -d admin.dev.uhue.fr --agree-tos
+CMD certonly --email cy.hue80@gmail.com -d dev.uhue.fr -d admin.dev.uhue.fr --agree-tos
